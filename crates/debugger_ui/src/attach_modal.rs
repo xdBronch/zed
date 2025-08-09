@@ -19,6 +19,7 @@ pub(super) struct Candidate {
     pub(super) pid: u32,
     pub(super) name: SharedString,
     pub(super) command: Vec<String>,
+    pub(super) parent: String,
 }
 
 pub(crate) struct AttachModalDelegate {
@@ -60,8 +61,9 @@ impl AttachModal {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
-        let mut processes: Box<[_]> = System::new_all()
-            .processes()
+        let system = System::new_all();
+        let processes = system.processes();
+        let mut processes: Box<[_]> = processes
             .values()
             .map(|process| {
                 let name = process.name().to_string_lossy().into_owned();
@@ -73,6 +75,13 @@ impl AttachModal {
                         .iter()
                         .map(|s| s.to_string_lossy().to_string())
                         .collect::<Vec<_>>(),
+                    parent: match process.parent() {
+                        Some(pid) => processes
+                            .get(&pid)
+                            .map(|p| p.name().to_string_lossy().into_owned())
+                            .unwrap_or_else(|| "No parent".to_owned()),
+                        None => "No parent".to_owned(),
+                    },
                 }
             })
             .collect();
@@ -172,10 +181,11 @@ impl PickerDelegate for AttachModalDelegate {
                         StringMatchCandidate::new(
                             id,
                             format!(
-                                "{} {} {}",
+                                "{} {} {} ({})",
                                 candidate.command.join(" "),
                                 candidate.pid,
-                                candidate.name
+                                candidate.name,
+                                candidate.parent
                             )
                             .as_str(),
                         )
@@ -299,7 +309,10 @@ impl PickerDelegate for AttachModalDelegate {
                 .child(
                     v_flex()
                         .items_start()
-                        .child(Label::new(format!("{} {}", candidate.name, candidate.pid)))
+                        .child(Label::new(format!(
+                            "{} {} ({})",
+                            candidate.name, candidate.pid, candidate.parent
+                        )))
                         .child(
                             div()
                                 .id(SharedString::from(format!("process-entry-{ix}-command")))
