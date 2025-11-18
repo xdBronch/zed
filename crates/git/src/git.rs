@@ -76,6 +76,8 @@ actions!(
         PushTo,
         /// Force pushes commits to the remote repository.
         ForcePush,
+        /// Force pushes commits to a specific remote branch.
+        ForcePushTo,
         /// Pulls changes from the remote repository.
         Pull,
         /// Pulls changes from the remote repository with rebase.

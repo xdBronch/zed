@@ -71,6 +71,7 @@ pub enum IconName {
     Close,
     CloudDownload,
     Code,
+    Codeberg,
     Command,
     Control,
     Copilot,

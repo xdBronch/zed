@@ -92,7 +92,7 @@ pub struct MultiBuffer {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-struct PathKeyIndex(u64);
+pub struct PathKeyIndex(u64);
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Event {

@@ -1061,6 +1061,7 @@ impl Render for CommitViewToolbar {
                 .children(remote_info.map(|(provider_name, url)| {
                     let icon = match provider_name.as_str() {
                         "GitHub" => IconName::Github,
+                        "Codeberg" => IconName::Codeberg,
                         _ => IconName::Link,
                     };
 

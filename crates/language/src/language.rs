@@ -1333,6 +1333,7 @@ impl CodeLabelExt for CodeLabel {
                     .or_else(|| grammar.highlight_id_for_name("function")),
                 Kind::OPERATOR => grammar.highlight_id_for_name("operator"),
                 Kind::PROPERTY => grammar.highlight_id_for_name("property"),
+                Kind::SNIPPET => grammar.highlight_id_for_name("snippet"),
                 Kind::STRUCT => grammar.highlight_id_for_name("type"),
                 Kind::VARIABLE => grammar.highlight_id_for_name("variable"),
                 Kind::KEYWORD => grammar.highlight_id_for_name("keyword"),

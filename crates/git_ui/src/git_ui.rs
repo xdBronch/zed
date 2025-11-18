@@ -182,6 +182,14 @@ pub fn init(cx: &mut App) {
                     panel.push(true, false, window, cx);
                 });
             });
+            workspace.register_action(|workspace, _: &git::ForcePushTo, window, cx| {
+                let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
+                    return;
+                };
+                panel.update(cx, |panel, cx| {
+                    panel.push(true, true, window, cx);
+                });
+            });
             workspace.register_action(|workspace, _: &git::Pull, window, cx| {
                 let Some(panel) = workspace.panel::<git_panel::GitPanel>(cx) else {
                     return;
@@ -938,6 +946,7 @@ mod remote_button {
                         .action("Push", git::Push.boxed_clone())
                         .action("Push To", git::PushTo.boxed_clone())
                         .action("Force Push", git::ForcePush.boxed_clone())
+                        .action("Force Push To", git::ForcePushTo.boxed_clone())
                 }))
             })
             .anchor(Anchor::TopRight)

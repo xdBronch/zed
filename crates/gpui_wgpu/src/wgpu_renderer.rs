@@ -333,11 +333,8 @@ impl WgpuRenderer {
             format: surface_format,
             width: clamped_width.max(1),
             height: clamped_height.max(1),
-            present_mode: config
-                .preferred_present_mode
-                .filter(|mode| surface_caps.present_modes.contains(mode))
-                .unwrap_or(wgpu::PresentMode::Fifo),
-            desired_maximum_frame_latency: 2,
+            present_mode: wgpu::PresentMode::Mailbox,
+            desired_maximum_frame_latency: 1,
             alpha_mode,
             view_formats: vec![],
         };

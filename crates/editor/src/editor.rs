@@ -6085,7 +6085,7 @@ impl Editor {
         }
     }
 
-    fn trigger_on_type_formatting(
+    pub fn trigger_on_type_formatting(
         &self,
         input: String,
         window: &mut Window,
@@ -18298,7 +18298,7 @@ impl Editor {
             diagnostics
                 .filter(move |entry| severity.matches(entry.diagnostic.severity))
                 .filter(|entry| entry.range.start != entry.range.end)
-                .filter(|entry| !entry.diagnostic.is_unnecessary)
+            // .filter(|entry| !entry.diagnostic.is_unnecessary)
         }
 
         let before = filtered(
@@ -18635,7 +18635,7 @@ impl Editor {
                 GoToDefinitionFallback::None => Ok(Navigated::No),
                 GoToDefinitionFallback::FindAllReferences => {
                     match editor.update_in(cx, |editor, window, cx| {
-                        editor.find_all_references(&FindAllReferences::default(), window, cx)
+                        editor.find_all_references(&FindAllReferences { always_open_multibuffer: false }, window, cx)
                     })? {
                         Some(references) => references.await,
                         None => Ok(Navigated::No),
@@ -29444,6 +29444,21 @@ impl ui_input::ErasedEditor for ErasedEditorImpl {
     fn set_placeholder_text(&self, text: &str, window: &mut Window, cx: &mut App) {
         self.0.update(cx, |this, cx| {
             this.set_placeholder_text(text, window, cx);
+        });
+    }
+
+    fn set_multiline(&self, max_lines: Option<usize>, _window: &mut Window, cx: &mut App) {
+        self.0.update(cx, |this, cx| {
+            if let Some(max_lines) = max_lines {
+                this.set_mode(EditorMode::AutoHeight {
+                    min_lines: 1,
+                    max_lines: Some(max_lines),
+                });
+                this.set_soft_wrap_mode(language_settings::SoftWrap::EditorWidth, cx);
+            } else {
+                this.set_mode(EditorMode::SingleLine);
+            }
+            cx.notify();
         });
     }
 

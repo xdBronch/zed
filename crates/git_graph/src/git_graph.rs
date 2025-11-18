@@ -2063,6 +2063,7 @@ impl GitGraph {
                                 let provider_name = remote.host.name();
                                 let icon = match provider_name.as_str() {
                                     "GitHub" => IconName::Github,
+                                    "Codeberg" => IconName::Codeberg,
                                     _ => IconName::Link,
                                 };
                                 let parsed_remote = ParsedGitRemote {

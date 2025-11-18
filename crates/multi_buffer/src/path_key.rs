@@ -318,7 +318,7 @@ impl MultiBuffer {
     }
 
     /// Sets excerpts, returns `true` if at least one new excerpt was added.
-    pub(crate) fn set_merged_excerpt_ranges_for_path<T>(
+    pub fn set_merged_excerpt_ranges_for_path<T>(
         &mut self,
         path: PathKey,
         buffer: Entity<Buffer>,

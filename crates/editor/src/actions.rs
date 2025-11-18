@@ -731,6 +731,8 @@ actions!(
         RotateSelectionsForward,
         /// Runs flycheck diagnostics.
         RunFlycheck,
+        /// Runs flycheck diagnostics only on the current files workspace.
+        RunFlycheckCurrentFile,
         /// Scrolls the cursor to the bottom of the viewport.
         ScrollCursorBottom,
         /// Scrolls the cursor to the center of the viewport.
